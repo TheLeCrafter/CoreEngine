@@ -1,0 +1,6 @@
+name: CoreEngine
+version: ${project.version}
+main: dev.thelecrafter.dimensionz.rpg.engine.Engine
+api-version: 1.16
+authors: [ TheLeCrafter ]
+description: Replace the vanilla combat/health/... system with this custom one
