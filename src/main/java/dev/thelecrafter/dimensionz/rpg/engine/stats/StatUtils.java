@@ -1,5 +1,7 @@
 package dev.thelecrafter.dimensionz.rpg.engine.stats;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class StatUtils {
 
     public static int getBaseValue(Stat stat) {
@@ -8,6 +10,17 @@ public class StatUtils {
                 return 20;
             default:
                 return 0;
+        }
+    }
+
+    public static String getDisplayName(Stat stat) {
+        switch (stat) {
+            case HEALTH:
+                return ChatColor.RED + "Leben";
+            case DEFENSE:
+                return ChatColor.GREEN + "Rüstung";
+            default:
+                return ChatColor.RED + "§lFEHLER";
         }
     }
 
