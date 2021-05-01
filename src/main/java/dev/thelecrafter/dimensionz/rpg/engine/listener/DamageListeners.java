@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 public class DamageListeners implements Listener {
@@ -38,11 +39,13 @@ public class DamageListeners implements Listener {
     }
 
     @EventHandler
-    public void onDamageSetDefense(EntityDamageByEntityEvent event) {
+    public void onDamageSetDefense(EntityDamageEvent event) {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getEntity());
             Player player = (Player) event.getEntity();
+            System.out.println("Original damage: " + event.getDamage());
             event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.INTEGER), player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
+            System.out.println("New damage: " + event.getDamage());
         }
     }
 

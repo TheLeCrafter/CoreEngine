@@ -31,7 +31,7 @@ public final class Engine extends JavaPlugin {
 
     public static void refreshPlayerStats(Player player) {
         player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
-        player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(1);
+        player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0);
         for (Stat stat : Stat.values()) {
             NamespacedKey key = new NamespacedKey(INSTANCE, stat.toString());
             int value = StatUtils.getBaseValue(stat);
