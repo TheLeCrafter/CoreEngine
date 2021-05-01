@@ -1,5 +1,7 @@
 package dev.thelecrafter.dimensionz.rpg.engine.utils.builder;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
@@ -7,6 +9,10 @@ import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculati
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -14,6 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ItemBuilder {
 
@@ -73,7 +80,7 @@ public class ItemBuilder {
             meta.getPersistentDataContainer().set(DamageCalculations.BASE_DAMAGE_KEY, PersistentDataType.INTEGER, damage);
         }
         if (strength > 0) {
-            lore.add(StatUtils.getDisplayName(Stat.STRENGTH) + ChatColor.GREEN + strength);
+            lore.add(StatUtils.getDisplayName(Stat.STRENGTH) + " Stärke: " + ChatColor.GREEN + strength);
             meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.STRENGTH.toString()), PersistentDataType.INTEGER, strength);
         }
         if (lore != null) {
@@ -81,7 +88,11 @@ public class ItemBuilder {
             lore.addAll(this.lore);
         }
         if (!lore.isEmpty()) meta.setLore(lore);
+        Multimap<Attribute, AttributeModifier> multimap = ArrayListMultimap.create();
+        multimap.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "REPLACE_ALL", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+        meta.setAttributeModifiers(multimap);
         item.setItemMeta(meta);
+        item.addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES);
         return item;
     }
 }
