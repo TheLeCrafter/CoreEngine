@@ -10,8 +10,10 @@ import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -29,6 +31,17 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageStandsHandler(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
+    }
+
+    @Override
+    public void onDisable() {
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity.getPersistentDataContainer().has(DamageStandsHandler.TEMPORARY_STAND_KEY, PersistentDataType.STRING)) {
+                    entity.remove();
+                }
+            }
+        }
     }
 
     public static void refreshPlayerStats(Player player) {
