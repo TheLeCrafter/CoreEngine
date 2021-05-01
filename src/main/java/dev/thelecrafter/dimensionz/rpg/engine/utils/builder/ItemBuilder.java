@@ -20,6 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ItemBuilder {
@@ -29,6 +30,7 @@ public class ItemBuilder {
     private int damage = 0;
     private int strength = 0;
     private final Material material;
+    private Map<NamespacedKey, String> namespacedKeys = null;
 
     public ItemBuilder(Material material) {
         this.material = material;
@@ -70,6 +72,14 @@ public class ItemBuilder {
         return material;
     }
 
+    public @Nullable Map<NamespacedKey, String> getNamespacedKeys() {
+        return namespacedKeys;
+    }
+
+    public void setNamespacedKeys(Map<NamespacedKey, String> namespacedKeys) {
+        this.namespacedKeys = namespacedKeys;
+    }
+
     public ItemStack build() {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -91,6 +101,11 @@ public class ItemBuilder {
         Multimap<Attribute, AttributeModifier> multimap = ArrayListMultimap.create();
         multimap.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "REPLACE_ALL", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         meta.setAttributeModifiers(multimap);
+        if (namespacedKeys != null) {
+            for (NamespacedKey key : namespacedKeys.keySet()) {
+                meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, namespacedKeys.get(key));
+            }
+        }
         item.setItemMeta(meta);
         item.addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES);
         return item;
