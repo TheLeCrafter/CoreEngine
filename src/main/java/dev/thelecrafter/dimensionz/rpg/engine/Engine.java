@@ -8,6 +8,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -38,6 +39,8 @@ public final class Engine extends JavaPlugin {
         for (World world : Bukkit.getWorlds()) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getPersistentDataContainer().has(DamageStandsHandler.TEMPORARY_STAND_KEY, PersistentDataType.STRING)) {
+                    entity.remove();
+                } else if (entity.getPersistentDataContainer().has(HealthStandsHandler.TEMPORARY_STAND_KEY, PersistentDataType.STRING)) {
                     entity.remove();
                 }
             }
