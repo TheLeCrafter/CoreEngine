@@ -7,6 +7,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -26,6 +27,7 @@ public final class Engine extends JavaPlugin {
         INSTANCE = this;
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new DamageStandsHandler(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
     }
 
