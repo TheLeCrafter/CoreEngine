@@ -4,3 +4,6 @@ main: dev.thelecrafter.dimensionz.rpg.engine.Engine
 api-version: 1.16
 authors: [ TheLeCrafter ]
 description: Replace the vanilla combat/health/... system with this custom one
+commands:
+  gettemplateitem:
+    permission: coreengine.commands.gettemplateitem

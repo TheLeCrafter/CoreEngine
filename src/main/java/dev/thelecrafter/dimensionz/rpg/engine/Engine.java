@@ -1,5 +1,7 @@
 package dev.thelecrafter.dimensionz.rpg.engine;
 
+import dev.thelecrafter.dimensionz.rpg.engine.commands.GetTemplateItemCommand;
+import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
@@ -18,24 +20,18 @@ public final class Engine extends JavaPlugin {
 
     public static Engine INSTANCE;
     public static final EquipmentSlot[] CHECKED_SLOTS = EquipmentSlot.values();
-    public static final Attribute[] ATTRIBUTES = new Attribute[]{
-            Attribute.GENERIC_ARMOR,
-            Attribute.GENERIC_ATTACK_DAMAGE
-    };
 
     @Override
     public void onEnable() {
         INSTANCE = this;
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
+        getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
     }
 
     public static void refreshPlayerStats(Player player) {
-        for (Attribute attribute : ATTRIBUTES) {
-            player.getAttribute(attribute).setBaseValue(0);
-            for (AttributeModifier modifier : player.getAttribute(attribute).getModifiers()) {
-                player.getAttribute(attribute).removeModifier(modifier);
-            }
-        }
+        player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
+        player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(1);
         for (Stat stat : Stat.values()) {
             NamespacedKey key = new NamespacedKey(INSTANCE, stat.toString());
             int value = StatUtils.getBaseValue(stat);
@@ -49,8 +45,10 @@ public final class Engine extends JavaPlugin {
                 }
             }
             Bukkit.getPluginManager().callEvent(new StatsUpdateEvent(player, stat));
-            if (player.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != value) {
-                Bukkit.getPluginManager().callEvent(new StatsChangeEvent(player, stat, player.getPersistentDataContainer().get(key, PersistentDataType.INTEGER), value));
+            if (player.getPersistentDataContainer().has(key, PersistentDataType.INTEGER)) {
+                if (player.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != value) {
+                    Bukkit.getPluginManager().callEvent(new StatsChangeEvent(player, stat, player.getPersistentDataContainer().get(key, PersistentDataType.INTEGER), value));
+                }
             }
             player.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
         }

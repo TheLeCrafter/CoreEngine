@@ -1,7 +1,13 @@
 package dev.thelecrafter.dimensionz.rpg.engine.utils.calculations;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+
+import java.util.UUID;
 
 public class DamageCalculations {
 
