@@ -19,6 +19,8 @@ public class StatUtils {
                 return ChatColor.RED + "❤";
             case DEFENSE:
                 return ChatColor.GREEN + "✦";
+            case STRENGTH:
+                return ChatColor.YELLOW + "⚡";
             default:
                 return ChatColor.RED + "§lFEHLER";
         }

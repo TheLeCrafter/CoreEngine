@@ -3,7 +3,9 @@ package dev.thelecrafter.dimensionz.rpg.engine.commands;
 import com.google.common.collect.ArrayListMultimap;
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.builder.ItemBuilder;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -21,18 +23,17 @@ public class GetTemplateItemCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
-            ItemStack itemStack = new ItemStack(Material.WOODEN_SWORD);
-            ItemMeta meta = itemStack.getItemMeta();
-            meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.STRENGTH.toString()), PersistentDataType.INTEGER, 10);
-            meta.getPersistentDataContainer().set(DamageCalculations.BASE_DAMAGE_KEY, PersistentDataType.INTEGER, 20);
-            meta.setLore(Arrays.asList(
-                    "§eSchaden: §a20",
-                    "§cStärke: §a10"
+            ItemBuilder builder = new ItemBuilder(Material.IRON_SWORD);
+            builder.setDisplayName(ChatColor.GOLD + "Template Sword");
+            builder.setDamage(20);
+            builder.setStrength(10);
+            builder.setLore(Arrays.asList(
+                    "§7Dies ist das allmächtige",
+                    "§7Template Schwert!",
+                    "§7Ich hab eindeutig zu",
+                    "§7wenig hobbies..."
             ));
-            meta.setAttributeModifiers(ArrayListMultimap.create());
-            meta.setDisplayName("§6Template Schwert");
-            itemStack.setItemMeta(meta);
-            ((Player) sender).getInventory().addItem(itemStack);
+            ((Player) sender).getInventory().addItem(builder.build());
         }
         return true;
     }
