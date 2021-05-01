@@ -15,20 +15,12 @@ public class DamageCalculations {
 
     public static double calculateWithDamageStats(int baseDamage, int strength) {
         // Formula base damage + ((base damage * strength) / 100)
-        double result = baseDamage;
-        double multiplier = baseDamage * strength;
-        multiplier = multiplier / 100;
-        result = result + multiplier;
-        return result;
+        return baseDamage + ((baseDamage * strength) / 100);
     }
 
-    public static double calculateWithDefensiveStats(double damage, int health, int defense) {
+    public static double calculateWithDefensiveStats(double damage, int defense) {
         // Formula damage - (damage * (defense / defense + 100))
-        double result = damage;
-        double multiplier = defense / (defense + 100);
-        multiplier = damage * multiplier;
-        result = result - multiplier;
-        return result;
+        return damage - (damage * (defense / (defense + 100)));
     }
 
 }

@@ -27,7 +27,7 @@ public class GetTemplateItemCommand implements CommandExecutor {
             builder.setDisplayName(ChatColor.GOLD + "Template Sword");
             builder.setDamage(20);
             builder.setStrength(10);
-            builder.setDefense(20);
+            builder.setDefense(60);
             builder.setLore(Arrays.asList(
                     "§7Dies ist das allmächtige",
                     "§7Template Schwert!",
