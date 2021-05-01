@@ -29,6 +29,8 @@ public class ItemBuilder {
     private String displayName = null;
     private int damage = 0;
     private int strength = 0;
+    private int defense = 0;
+    private int health = 0;
     private final Material material;
     private Map<NamespacedKey, String> namespacedKeys = null;
 
@@ -80,6 +82,22 @@ public class ItemBuilder {
         this.namespacedKeys = namespacedKeys;
     }
 
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public ItemStack build() {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -92,6 +110,14 @@ public class ItemBuilder {
         if (strength > 0) {
             lore.add(StatUtils.getDisplayName(Stat.STRENGTH) + " Stärke: " + ChatColor.GREEN + strength);
             meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.STRENGTH.toString()), PersistentDataType.INTEGER, strength);
+        }
+        if (health > 0) {
+            lore.add(StatUtils.getDisplayName(Stat.HEALTH) + " Leben: " + ChatColor.GREEN + health);
+            meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.INTEGER, health);
+        }
+        if (defense > 0) {
+            lore.add(StatUtils.getDisplayName(Stat.DEFENSE) + " Rüstung: " + ChatColor.GREEN + defense);
+            meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER, defense);
         }
         if (lore != null) {
             lore.add("");
