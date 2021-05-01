@@ -3,10 +3,12 @@ package dev.thelecrafter.dimensionz.rpg.engine.listener;
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,7 +16,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class DamageListeners implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onDamageSetAttack(EntityDamageByEntityEvent event) {
         if (event.getDamager().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getDamager());
@@ -33,6 +35,8 @@ public class DamageListeners implements Listener {
             }
             double damage = DamageCalculations.calculateWithDamageStats(baseDamage, strength);
             if (damage < 0) damage = 0;
+            if (player.getCooledAttackStrength(0) < 1) damage = baseDamage / 4;
+            DamageStandsHandler.spawnArmorStand(event.getEntity(), damage);
             event.setDamage(damage);
         }
     }

@@ -31,7 +31,6 @@ public final class Engine extends JavaPlugin {
         INSTANCE = this;
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
-        Bukkit.getPluginManager().registerEvents(new DamageStandsHandler(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new HealthStandsHandler(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
     }
