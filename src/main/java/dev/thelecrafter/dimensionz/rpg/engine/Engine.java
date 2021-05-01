@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -31,6 +32,7 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageStandsHandler(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new HealthStandsHandler(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
     }
 

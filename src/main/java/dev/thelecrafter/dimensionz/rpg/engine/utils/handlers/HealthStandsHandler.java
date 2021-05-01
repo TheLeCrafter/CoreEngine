@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -31,7 +32,7 @@ public class HealthStandsHandler implements Listener {
         if (entity.getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) health = entity.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
         double maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         if (entity.getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.INTEGER)) maxHealth = entity.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.INTEGER);
-        return StatUtils.getDisplayName(Stat.HEALTH) + health + ChatColor.GREEN + "/" + ChatColor.RED + maxHealth;
+        return ChatColor.RED + "" + health + ChatColor.GREEN + "/" + ChatColor.RED + maxHealth + StatUtils.getDisplayName(Stat.HEALTH);
     }
 
     @EventHandler
@@ -62,13 +63,17 @@ public class HealthStandsHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(EntityDamageEvent event) {
         if (STAND_MAP.containsKey(event.getEntity())) {
-            if (event.getEntity().isDead()) {
-                STAND_MAP.get(event.getEntity()).remove();
-                STAND_MAP.remove(event.getEntity());
-            } else {
-                LivingEntity entity = (LivingEntity) event.getEntity();
-                STAND_MAP.get(getDisplayName(entity));
-            }
+            LivingEntity entity = (LivingEntity) event.getEntity();
+            STAND_MAP.get(entity).setCustomName(getDisplayName(entity));
+        }
+    }
+
+    @EventHandler
+    public void onDeath(EntityDeathEvent event) {
+        if (STAND_MAP.containsKey(event.getEntity())) {
+            LivingEntity entity = event.getEntity();
+            STAND_MAP.get(entity).remove();
+            STAND_MAP.remove(entity);
         }
     }
 
