@@ -13,12 +13,21 @@ public class DamageCalculations {
 
     public static final NamespacedKey BASE_DAMAGE_KEY = new NamespacedKey(Engine.INSTANCE, "base_damage");
 
-    public static double calculateWithStats(int baseDamage, int strength) {
+    public static double calculateWithDamageStats(int baseDamage, int strength) {
         // Formula base damage + ((base damage * strength) / 100)
         double result = baseDamage;
         double multiplier = baseDamage * strength;
         multiplier = multiplier / 100;
         result = result + multiplier;
+        return result;
+    }
+
+    public static double calculateWithDefensiveStats(double damage, int health, int defense) {
+        // Formula damage - (damage * (defense / defense + 100))
+        double result = damage;
+        double multiplier = defense / (defense + 100);
+        multiplier = damage * multiplier;
+        result = result - multiplier;
         return result;
     }
 
