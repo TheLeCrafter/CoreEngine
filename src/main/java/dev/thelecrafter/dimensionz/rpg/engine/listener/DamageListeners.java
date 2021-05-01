@@ -33,7 +33,6 @@ public class DamageListeners implements Listener {
             }
             double damage = DamageCalculations.calculateWithDamageStats(baseDamage, strength);
             if (damage < 0) damage = 0;
-            System.out.println("damage = " + damage);
             event.setDamage(damage);
         }
     }
