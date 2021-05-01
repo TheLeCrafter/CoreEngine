@@ -7,6 +7,8 @@ import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -16,6 +18,10 @@ public final class Engine extends JavaPlugin {
 
     public static Engine INSTANCE;
     public static final EquipmentSlot[] CHECKED_SLOTS = EquipmentSlot.values();
+    public static final Attribute[] ATTRIBUTES = new Attribute[]{
+            Attribute.GENERIC_ARMOR,
+            Attribute.GENERIC_ATTACK_DAMAGE
+    };
 
     @Override
     public void onEnable() {
@@ -24,6 +30,12 @@ public final class Engine extends JavaPlugin {
     }
 
     public static void refreshPlayerStats(Player player) {
+        for (Attribute attribute : ATTRIBUTES) {
+            player.getAttribute(attribute).setBaseValue(0);
+            for (AttributeModifier modifier : player.getAttribute(attribute).getModifiers()) {
+                player.getAttribute(attribute).removeModifier(modifier);
+            }
+        }
         for (Stat stat : Stat.values()) {
             NamespacedKey key = new NamespacedKey(INSTANCE, stat.toString());
             int value = StatUtils.getBaseValue(stat);
