@@ -16,9 +16,9 @@ public class StatUtils {
     public static String getDisplayName(Stat stat) {
         switch (stat) {
             case HEALTH:
-                return ChatColor.RED + "Leben";
+                return ChatColor.RED + "❤";
             case DEFENSE:
-                return ChatColor.GREEN + "Rüstung";
+                return ChatColor.GREEN + "✦";
             default:
                 return ChatColor.RED + "§lFEHLER";
         }
