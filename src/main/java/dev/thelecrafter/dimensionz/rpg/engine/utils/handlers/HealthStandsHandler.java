@@ -32,7 +32,7 @@ public class HealthStandsHandler implements Listener {
         return ChatColor.RED + "" + health + ChatColor.GREEN + "/" + ChatColor.RED + maxHealth + StatUtils.getDisplayName(Stat.HEALTH);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onSpawn(EntitySpawnEvent event) {
         if (!event.getEntity().getType().equals(EntityType.ARMOR_STAND) && !event.getEntity().getType().equals(EntityType.PLAYER)) {
             if (event.getEntity() instanceof Damageable) {
@@ -44,9 +44,6 @@ public class HealthStandsHandler implements Listener {
                     }
                     if (!event.getEntity().getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
                         event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, maxHealth);
-                    }
-                    if (!event.getEntity().getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)) {
-                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER, 0);
                     }
                     ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
                     ((LivingEntity) event.getEntity()).setHealth(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
@@ -75,7 +72,7 @@ public class HealthStandsHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (STAND_MAP.containsKey(event.getEntity())) {
             LivingEntity entity = (LivingEntity) event.getEntity();

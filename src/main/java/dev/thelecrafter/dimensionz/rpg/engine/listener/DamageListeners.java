@@ -6,7 +6,10 @@ import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,7 +40,14 @@ public class DamageListeners implements Listener {
             double damage = DamageCalculations.calculateWithDamageStats(baseDamage, strength);
             if (damage < 0) damage = 0;
             if (player.getCooledAttackStrength(0) < 1) damage = baseDamage / 4;
-            event.setDamage(damage);
+            if (event.getEntity() instanceof LivingEntity) {
+                if (event.getEntity() instanceof Damageable) {
+                    ((LivingEntity) event.getEntity()).damage((((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * damage) / 100, event.getDamager());
+                    event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) - damage);
+                    DamageStandsHandler.spawnArmorStand(event.getEntity(), damage);
+                }
+            }
+            event.setCancelled(true);
         }
     }
 
@@ -46,11 +56,7 @@ public class DamageListeners implements Listener {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getEntity());
             event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
-            ((Player) event.getEntity()).setHealth((event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
-        } else {
-            double originalDamage = event.getDamage();
-            event.setDamage((DamageCalculations.calculateWithDefensiveStats(originalDamage, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
-            DamageStandsHandler.spawnArmorStand(event.getEntity(), DamageCalculations.calculateWithDefensiveStats(originalDamage, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
+            ((Player) event.getEntity()).setHealth(Math.round((event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100));
         }
     }
 
