@@ -19,8 +19,8 @@ public class DamageCalculations {
     }
 
     public static double calculateWithDefensiveStats(double damage, int defense) {
-        // Formula damage - (damage * (defense / defense + 100))
-        return damage - (damage * (defense / (defense + 100)));
+        // Formula damage - (damage * ((defense + 1) / (defense + 1) + 100))
+        return damage - (damage * ((defense + 1) / ((defense + 1) + 100)));
     }
 
 }
