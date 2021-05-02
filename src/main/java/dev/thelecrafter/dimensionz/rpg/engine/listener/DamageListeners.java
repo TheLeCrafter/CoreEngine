@@ -7,7 +7,6 @@ import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculati
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;

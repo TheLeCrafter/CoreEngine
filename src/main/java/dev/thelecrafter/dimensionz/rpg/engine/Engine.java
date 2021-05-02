@@ -1,6 +1,7 @@
 package dev.thelecrafter.dimensionz.rpg.engine;
 
 import dev.thelecrafter.dimensionz.rpg.engine.commands.GetTemplateItemCommand;
+import dev.thelecrafter.dimensionz.rpg.engine.commands.OpenStatsMenuCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
@@ -9,6 +10,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.items.MenuItem;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -32,7 +34,9 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new HealthStandsHandler(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new MenuItem(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
+        getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
     }
 
     @Override

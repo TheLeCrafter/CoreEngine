@@ -7,3 +7,5 @@ description: Replace the vanilla combat/health/... system with this custom one
 commands:
   gettemplateitem:
     permission: coreengine.commands.gettemplateitem
+  openstatsmenucommand:
+    description: Opens the stats menu
