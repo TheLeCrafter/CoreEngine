@@ -24,7 +24,7 @@ public class HealthStandsHandler implements Listener {
     public static final NamespacedKey TEMPORARY_STAND_KEY = new NamespacedKey(Engine.INSTANCE, "TEMPORARY_HEALTH_STAND");
     public static final Map<Entity, ArmorStand> STAND_MAP = new HashMap<>();
 
-    public String getDisplayName(LivingEntity entity) {
+    public static String getDisplayName(LivingEntity entity) {
         double health = entity.getHealth();
         if (entity.getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) health = entity.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
         double maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
@@ -69,14 +69,6 @@ public class HealthStandsHandler implements Listener {
     public void onMove(EntityMoveEvent event) {
         if (STAND_MAP.containsKey(event.getEntity())) {
             STAND_MAP.get(event.getEntity()).teleport(event.getEntity().getLocation().clone().add(0, event.getEntity().getEyeHeight(), 0));
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onDamage(EntityDamageEvent event) {
-        if (STAND_MAP.containsKey(event.getEntity())) {
-            LivingEntity entity = (LivingEntity) event.getEntity();
-            STAND_MAP.get(entity).setCustomName(getDisplayName(entity));
         }
     }
 

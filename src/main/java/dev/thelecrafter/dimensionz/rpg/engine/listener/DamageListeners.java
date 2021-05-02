@@ -5,6 +5,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Damageable;
@@ -42,12 +43,18 @@ public class DamageListeners implements Listener {
             if (player.getCooledAttackStrength(0) < 1) damage = baseDamage / 4;
             if (event.getEntity() instanceof LivingEntity) {
                 if (event.getEntity() instanceof Damageable) {
-                    ((LivingEntity) event.getEntity()).damage((((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * damage) / 100, event.getDamager());
+                    if (event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - damage <= 0) {
+                        event.setDamage(((LivingEntity) event.getEntity()).getHealth());
+                    } else {
+                        event.setDamage((damage * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
+                    }
+                    if (HealthStandsHandler.STAND_MAP.containsKey(event.getEntity())) {
+                        HealthStandsHandler.STAND_MAP.get(event.getEntity()).setCustomName(HealthStandsHandler.getDisplayName((LivingEntity) event.getEntity()));
+                    }
                     event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) - damage);
                     DamageStandsHandler.spawnArmorStand(event.getEntity(), damage);
                 }
-            }
-            event.setCancelled(true);
+            } else event.setDamage(0);
         }
     }
 
