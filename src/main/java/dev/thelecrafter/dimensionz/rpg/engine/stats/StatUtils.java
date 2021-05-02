@@ -12,8 +12,30 @@ public class StatUtils {
         switch (stat) {
             case HEALTH:
                 return 20;
+            case ATTACK_SPEED:
+                return 100;
             default:
                 return 0;
+        }
+    }
+
+    public static int getMinValue(Stat stat) {
+        switch (stat) {
+            case HEALTH:
+                return 5;
+            case ATTACK_SPEED:
+                return 1;
+            default:
+                return -1;
+        }
+    }
+
+    public static int getMaxValue(Stat stat) {
+        switch (stat) {
+            case ATTACK_SPEED:
+                return 300;
+            default:
+                return -1; // That means no cap
         }
     }
 
@@ -24,7 +46,9 @@ public class StatUtils {
             case DEFENSE:
                 return ChatColor.GREEN + "✦";
             case STRENGTH:
-                return ChatColor.YELLOW + "⚡";
+                return ChatColor.BLUE + "⚡";
+            case ATTACK_SPEED:
+                return ChatColor.YELLOW + "⌛";
             default:
                 return ChatColor.RED + "§lFEHLER";
         }

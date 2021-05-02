@@ -7,10 +7,7 @@ import io.papermc.paper.event.entity.EntityMoveEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -38,19 +35,37 @@ public class HealthStandsHandler implements Listener {
     @EventHandler
     public void onSpawn(EntitySpawnEvent event) {
         if (!event.getEntity().getType().equals(EntityType.ARMOR_STAND) && !event.getEntity().getType().equals(EntityType.PLAYER)) {
-            if (event.getEntity() instanceof LivingEntity) {
-                LivingEntity entity = (LivingEntity) event.getEntity();
-                ArmorStand stand = entity.getWorld().spawn(event.getLocation().clone().add(0, ((LivingEntity) event.getEntity()).getEyeHeight(), 0), ArmorStand.class);
-                stand.setMarker(true);
-                stand.setGravity(false);
-                stand.setInvulnerable(true);
-                stand.setInvisible(true);
-                stand.setCustomName(getDisplayName(entity));
-                stand.setCustomNameVisible(true);
-                stand.getPersistentDataContainer().set(TEMPORARY_STAND_KEY, PersistentDataType.STRING, "true");
-                STAND_MAP.put(entity, stand);
+            if (event.getEntity() instanceof Damageable) {
+                if (event.getEntity() instanceof LivingEntity) {
+                    double health = ((LivingEntity) event.getEntity()).getHealth();
+                    double maxHealth = ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                    if (!event.getEntity().getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, health);
+                    }
+                    if (!event.getEntity().getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, maxHealth);
+                    }
+                    if (!event.getEntity().getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)) {
+                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER, 0);
+                    }
+                    ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
+                    ((LivingEntity) event.getEntity()).setHealth(100);
+                    spawnArmorStands((LivingEntity) event.getEntity());
+                }
             }
         }
+    }
+
+    public void spawnArmorStands(LivingEntity entity) {
+        ArmorStand stand = entity.getWorld().spawn(entity.getLocation().clone().add(0, entity.getEyeHeight(), 0), ArmorStand.class);
+        stand.setMarker(true);
+        stand.setGravity(false);
+        stand.setInvulnerable(true);
+        stand.setInvisible(true);
+        stand.setCustomName(getDisplayName(entity));
+        stand.setCustomNameVisible(true);
+        stand.getPersistentDataContainer().set(TEMPORARY_STAND_KEY, PersistentDataType.STRING, "true");
+        STAND_MAP.put(entity, stand);
     }
 
     @EventHandler

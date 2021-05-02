@@ -45,9 +45,8 @@ public class DamageListeners implements Listener {
     public void onDamageSetDefense(EntityDamageEvent event) {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getEntity());
-            Player player = (Player) event.getEntity();
-            event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
         }
+        event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
     }
 
 }

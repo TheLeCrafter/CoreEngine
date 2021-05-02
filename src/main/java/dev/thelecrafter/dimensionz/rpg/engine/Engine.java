@@ -63,6 +63,16 @@ public final class Engine extends JavaPlugin {
                     }
                 }
             }
+            if (StatUtils.getMaxValue(stat) > 0) {
+                if (StatUtils.getMaxValue(stat) <= value) {
+                    value = StatUtils.getMaxValue(stat);
+                }
+            }
+            if (StatUtils.getMinValue(stat) > 0) {
+                if (StatUtils.getMinValue(stat) >= value) {
+                    value = StatUtils.getMinValue(stat);
+                }
+            }
             Bukkit.getPluginManager().callEvent(new StatsUpdateEvent(player, stat));
             if (player.getPersistentDataContainer().has(key, PersistentDataType.INTEGER)) {
                 if (player.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != value) {
@@ -71,5 +81,6 @@ public final class Engine extends JavaPlugin {
             }
             player.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
         }
+        player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue((player.getPersistentDataContainer().get(new NamespacedKey(INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER) / 100) * 2);
     }
 }

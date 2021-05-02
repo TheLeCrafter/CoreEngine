@@ -31,6 +31,7 @@ public class ItemBuilder {
     private int strength = 0;
     private int defense = 0;
     private int health = 0;
+    private int attack_speed = 0;
     private final Material material;
     private Map<NamespacedKey, String> namespacedKeys = null;
 
@@ -98,6 +99,14 @@ public class ItemBuilder {
         this.health = health;
     }
 
+    public int getAttackSpeed() {
+        return attack_speed;
+    }
+
+    public void setAttackSpeed(int attack_speed) {
+        this.attack_speed = attack_speed;
+    }
+
     public ItemStack build() {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -110,6 +119,10 @@ public class ItemBuilder {
         if (strength > 0) {
             lore.add(StatUtils.getDisplayName(Stat.STRENGTH) + " Stärke: " + ChatColor.GREEN + strength);
             meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.STRENGTH.toString()), PersistentDataType.INTEGER, strength);
+        }
+        if (attack_speed > 0) {
+            lore.add(StatUtils.getDisplayName(Stat.ATTACK_SPEED) + " Schlag Geschwindigkeit: " + ChatColor.GREEN + attack_speed);
+            meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER, attack_speed);
         }
         if (health > 0) {
             lore.add(StatUtils.getDisplayName(Stat.HEALTH) + " Leben: " + ChatColor.GREEN + health);
