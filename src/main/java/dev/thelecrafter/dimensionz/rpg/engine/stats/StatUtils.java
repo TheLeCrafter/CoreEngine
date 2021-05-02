@@ -26,7 +26,7 @@ public class StatUtils {
             case ATTACK_SPEED:
                 return 1;
             default:
-                return -1;
+                return -1; // That means no cap
         }
     }
 
@@ -34,6 +34,8 @@ public class StatUtils {
         switch (stat) {
             case ATTACK_SPEED:
                 return 300;
+            case DOUBLE_DAMAGE:
+                return 100;
             default:
                 return -1; // That means no cap
         }
@@ -49,6 +51,8 @@ public class StatUtils {
                 return ChatColor.BLUE + "⚡";
             case ATTACK_SPEED:
                 return ChatColor.YELLOW + "⌛";
+            case DOUBLE_DAMAGE:
+                return ChatColor.RED + "✴";
             default:
                 return ChatColor.RED + "§lFEHLER";
         }

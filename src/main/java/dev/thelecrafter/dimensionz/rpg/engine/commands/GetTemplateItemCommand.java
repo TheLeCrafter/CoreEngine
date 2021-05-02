@@ -28,7 +28,8 @@ public class GetTemplateItemCommand implements CommandExecutor {
             builder.setDamage(20);
             builder.setStrength(10);
             builder.setDefense(60);
-            builder.setAttackSpeed(100);
+            builder.setAttackSpeed(160);
+            builder.setDoubleDamage(20);
             builder.setLore(Arrays.asList(
                     "§7Dies ist das allmächtige",
                     "§7Template Schwert!",

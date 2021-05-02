@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class DamageCalculations {
@@ -16,6 +17,15 @@ public class DamageCalculations {
     public static double calculateWithDamageStats(int baseDamage, int strength) {
         // Formula base damage + ((base damage * strength) / 100)
         return baseDamage + ((baseDamage * strength) / 100);
+    }
+
+    public static double calculateDoubleDamage(double damage, int doubleDamageChance) {
+        Random random = new Random();
+        int result = random.nextInt(100) + 1;
+        if (result <= doubleDamageChance) {
+            damage = damage * 2;
+        }
+        return damage;
     }
 
     public static double calculateWithDefensiveStats(double damage, int defense) {

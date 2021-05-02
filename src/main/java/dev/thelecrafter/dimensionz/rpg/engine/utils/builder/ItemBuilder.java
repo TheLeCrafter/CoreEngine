@@ -32,6 +32,7 @@ public class ItemBuilder {
     private int defense = 0;
     private int health = 0;
     private int attack_speed = 0;
+    private int double_damage = 0;
     private final Material material;
     private Map<NamespacedKey, String> namespacedKeys = null;
 
@@ -107,6 +108,14 @@ public class ItemBuilder {
         this.attack_speed = attack_speed;
     }
 
+    public int getDoubleDamage() {
+        return double_damage;
+    }
+
+    public void setDoubleDamage(int double_damage) {
+        this.double_damage = double_damage;
+    }
+
     public ItemStack build() {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -121,8 +130,12 @@ public class ItemBuilder {
             meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.STRENGTH.toString()), PersistentDataType.INTEGER, strength);
         }
         if (attack_speed > 0) {
-            lore.add(StatUtils.getDisplayName(Stat.ATTACK_SPEED) + " Schlag Geschwindigkeit: " + ChatColor.GREEN + attack_speed);
+            lore.add(StatUtils.getDisplayName(Stat.ATTACK_SPEED) + " Feinfühligkeit: " + ChatColor.GREEN + attack_speed);
             meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER, attack_speed);
+        }
+        if (double_damage > 0) {
+            lore.add(StatUtils.getDisplayName(Stat.DOUBLE_DAMAGE) + " Raserei: " + ChatColor.GREEN + double_damage);
+            meta.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.DOUBLE_DAMAGE.toString()), PersistentDataType.INTEGER, double_damage);
         }
         if (health > 0) {
             lore.add(StatUtils.getDisplayName(Stat.HEALTH) + " Leben: " + ChatColor.GREEN + health);

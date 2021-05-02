@@ -40,6 +40,7 @@ public class DamageListeners implements Listener {
             }
             double damage = DamageCalculations.calculateWithDamageStats(baseDamage, strength);
             if (damage < 0) damage = 0;
+            if (damage > 0) damage = DamageCalculations.calculateDoubleDamage(damage, player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DOUBLE_DAMAGE.toString()), PersistentDataType.INTEGER));
             if (player.getCooledAttackStrength(0) < 1) damage = baseDamage / 4;
             if (event.getEntity() instanceof LivingEntity) {
                 if (event.getEntity() instanceof Damageable) {
