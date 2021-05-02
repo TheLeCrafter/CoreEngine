@@ -49,7 +49,7 @@ public class HealthStandsHandler implements Listener {
                         event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER, 0);
                     }
                     ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
-                    ((LivingEntity) event.getEntity()).setHealth(100);
+                    ((LivingEntity) event.getEntity()).setHealth(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                     spawnArmorStands((LivingEntity) event.getEntity());
                 }
             }

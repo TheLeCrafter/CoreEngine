@@ -2,6 +2,7 @@ package dev.thelecrafter.dimensionz.rpg.engine.listener;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import org.bukkit.NamespacedKey;
@@ -36,7 +37,6 @@ public class DamageListeners implements Listener {
             double damage = DamageCalculations.calculateWithDamageStats(baseDamage, strength);
             if (damage < 0) damage = 0;
             if (player.getCooledAttackStrength(0) < 1) damage = baseDamage / 4;
-            DamageStandsHandler.spawnArmorStand(event.getEntity(), damage);
             event.setDamage(damage);
         }
     }
@@ -45,8 +45,13 @@ public class DamageListeners implements Listener {
     public void onDamageSetDefense(EntityDamageEvent event) {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getEntity());
+            event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
+            ((Player) event.getEntity()).setHealth((event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
+        } else {
+            double originalDamage = event.getDamage();
+            event.setDamage((DamageCalculations.calculateWithDefensiveStats(originalDamage, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
+            DamageStandsHandler.spawnArmorStand(event.getEntity(), DamageCalculations.calculateWithDefensiveStats(originalDamage, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
         }
-        event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
     }
 
 }
