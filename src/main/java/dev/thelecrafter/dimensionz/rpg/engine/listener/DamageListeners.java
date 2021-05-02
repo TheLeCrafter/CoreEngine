@@ -49,6 +49,9 @@ public class DamageListeners implements Listener {
                         event.setDamage((damage * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
                     }
                     event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - damage);
+                    if (event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) < 0) {
+                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, 0.0);
+                    }
                     if (HealthStandsHandler.STAND_MAP.containsKey(event.getEntity())) {
                         HealthStandsHandler.STAND_MAP.get(event.getEntity()).setCustomName(HealthStandsHandler.getDisplayName((LivingEntity) event.getEntity()));
                     }
