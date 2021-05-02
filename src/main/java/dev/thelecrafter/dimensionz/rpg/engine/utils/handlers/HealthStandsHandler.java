@@ -28,7 +28,7 @@ public class HealthStandsHandler implements Listener {
         double health = entity.getHealth();
         if (entity.getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) health = entity.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
         double maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        if (entity.getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.INTEGER)) maxHealth = entity.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.INTEGER);
+        if (entity.getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) maxHealth = entity.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE);
         return ChatColor.RED + "" + health + ChatColor.GREEN + "/" + ChatColor.RED + maxHealth + StatUtils.getDisplayName(Stat.HEALTH);
     }
 
