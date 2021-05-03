@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +19,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 
-public class StatsInventory {
+public class StatsInventory implements Listener {
 
     public static Inventory getInventory(Player player) {
         Inventory inv = Bukkit.createInventory(player, 3 * 9, ChatColor.GOLD + "Deine Stats");
@@ -28,7 +29,6 @@ public class StatsInventory {
             meta.setDisplayName("§7");
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             placeholder.setItemMeta(meta);
-            placeholder.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
             inv.setItem(i, placeholder);
         }
         ItemStack health = CustomTextureHead.getItem("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYThkYTdlMjU1ZTA5YzhiMzc4ZWM4NmMwYjkyMmZhODY0YzRiMTlkMGU1ZTVkYTRkOGM3M2MyYjU2OWMyMjUwMiJ9fX0=");

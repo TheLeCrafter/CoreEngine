@@ -83,7 +83,11 @@ public final class Engine extends JavaPlugin {
                     Bukkit.getPluginManager().callEvent(new StatsChangeEvent(player, stat, player.getPersistentDataContainer().get(key, PersistentDataType.INTEGER), value));
                 }
             }
-            player.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
+            if (stat.equals(Stat.HEALTH)) {
+                player.getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, Double.parseDouble(String.valueOf(value)));
+            } else {
+                player.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
+            }
         }
         player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue((player.getPersistentDataContainer().get(new NamespacedKey(INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER) / 100) * 2);
     }

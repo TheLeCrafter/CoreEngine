@@ -59,6 +59,7 @@ public class MenuItem implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getCurrentItem() != null) {
             if (event.getCurrentItem().isSimilar(item())) {
+                event.setCancelled(true);
                 Bukkit.dispatchCommand(event.getWhoClicked(), "openstatsmenu");
             }
         }
