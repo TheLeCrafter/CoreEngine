@@ -10,10 +10,10 @@ public class StatsChangeEvent extends Event {
     public static final HandlerList HANDLER_LIST = new HandlerList();
     public final Player player;
     public final Stat stat;
-    public final int from;
-    public final int to;
+    public final double from;
+    public final double to;
 
-    public StatsChangeEvent(Player player, Stat stat, int from, int to) {
+    public StatsChangeEvent(Player player, Stat stat, double from, double to) {
         this.player = player;
         this.stat = stat;
         this.from = from;
@@ -28,11 +28,11 @@ public class StatsChangeEvent extends Event {
         return stat;
     }
 
-    public int getFrom() {
+    public double getFrom() {
         return from;
     }
 
-    public int getTo() {
+    public double getTo() {
         return to;
     }
 

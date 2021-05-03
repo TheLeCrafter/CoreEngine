@@ -4,13 +4,17 @@ import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.CustomTextureHead;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -21,8 +25,10 @@ import java.util.Arrays;
 
 public class StatsInventory implements Listener {
 
+    public static final String TITLE = ChatColor.GOLD + "Deine Stats";
+
     public static Inventory getInventory(Player player) {
-        Inventory inv = Bukkit.createInventory(player, 3 * 9, ChatColor.GOLD + "Deine Stats");
+        Inventory inv = Bukkit.createInventory(player, 3 * 9, TITLE);
         for (int i = 0; i < inv.getSize(); i++) {
             ItemStack placeholder = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
             ItemMeta meta = placeholder.getItemMeta();
@@ -52,6 +58,25 @@ public class StatsInventory implements Listener {
         defense.setItemMeta(defenseMeta);
         inv.setItem(11, defense);
         return inv;
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getView().getTitle().equals(TITLE)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onStatsChange(StatsChangeEvent event) {
+        if (event.getPlayer().getOpenInventory() != null) {
+            if (event.getPlayer().getOpenInventory().getTitle() != null) {
+                if (event.getPlayer().getOpenInventory().getTitle().equals(TITLE)) {
+                    event.getPlayer().closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
+                    event.getPlayer().openInventory(getInventory(event.player));
+                }
+            }
+        }
     }
 
 }
