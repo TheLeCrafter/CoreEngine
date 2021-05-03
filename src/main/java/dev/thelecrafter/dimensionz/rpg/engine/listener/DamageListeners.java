@@ -6,6 +6,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
@@ -16,9 +17,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 public class DamageListeners implements Listener {
+
+    public static final NamespacedKey REGENERATION_STAT_KEY = new NamespacedKey(Engine.INSTANCE, "REGENERATION_PERCENTAGE");
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onDamageSetAttack(EntityDamageByEntityEvent event) {
@@ -66,8 +73,38 @@ public class DamageListeners implements Listener {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getEntity());
             event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
+            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - event.getDamage());
             ((Player) event.getEntity()).setHealth(Math.round((event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100));
         }
+    }
+
+    // DISABLE PLAYER REGENERATION
+    @EventHandler
+    public void onRegeneration(EntityRegainHealthEvent event) {
+        if (event.getEntity().getType().equals(EntityType.PLAYER)) {
+            if (!event.getRegainReason().equals(EntityRegainHealthEvent.RegainReason.CUSTOM)) event.setCancelled(true);
+        }
+    }
+
+    // CUSTOM PLAYER REGENERATION
+    public static void initCustomPlayerRegeneration(@Nonnegative @Nonnull int secondsPerRegeneration, @Nonnegative @Nonnull int baseRegenPercentage, @Nonnegative @Nonnull int maxRegenPercentage) {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Engine.INSTANCE, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (!player.getPersistentDataContainer().has(REGENERATION_STAT_KEY, PersistentDataType.INTEGER)) {
+                    player.getPersistentDataContainer().set(REGENERATION_STAT_KEY, PersistentDataType.INTEGER, baseRegenPercentage);
+                }
+                if (player.getPersistentDataContainer().get(REGENERATION_STAT_KEY, PersistentDataType.INTEGER) < baseRegenPercentage) {
+                    player.getPersistentDataContainer().set(REGENERATION_STAT_KEY, PersistentDataType.INTEGER, baseRegenPercentage);
+                }
+                if (player.getPersistentDataContainer().get(REGENERATION_STAT_KEY, PersistentDataType.INTEGER) > maxRegenPercentage) {
+                    player.getPersistentDataContainer().set(REGENERATION_STAT_KEY, PersistentDataType.INTEGER, maxRegenPercentage);
+                }
+                // Do the regeneration
+                int regenPercentage = player.getPersistentDataContainer().get(REGENERATION_STAT_KEY, PersistentDataType.INTEGER);
+                double healthToHeal = (regenPercentage * player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100;
+                Engine.healPlayer(player, healthToHeal, true);
+            }
+        }, 0, 20 * secondsPerRegeneration);
     }
 
 }

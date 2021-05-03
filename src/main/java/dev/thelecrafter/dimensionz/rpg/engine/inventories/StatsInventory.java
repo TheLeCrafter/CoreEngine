@@ -33,7 +33,7 @@ public class StatsInventory implements Listener {
         }
         ItemStack health = CustomTextureHead.getItem("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYThkYTdlMjU1ZTA5YzhiMzc4ZWM4NmMwYjkyMmZhODY0YzRiMTlkMGU1ZTVkYTRkOGM3M2MyYjU2OWMyMjUwMiJ9fX0=");
         ItemMeta healthMeta = health.getItemMeta();
-        healthMeta.setDisplayName(StatUtils.getDisplayName(Stat.HEALTH) + " Maximale Leben: " + player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE));
+        healthMeta.setDisplayName(StatUtils.getDisplayName(Stat.HEALTH) + " Leben: " + player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) + "/" + player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE));
         healthMeta.setLore(Arrays.asList(
                 ChatColor.GRAY + "Deine Leben bestimmen",
                 ChatColor.GRAY + "wie viel Schaden du",

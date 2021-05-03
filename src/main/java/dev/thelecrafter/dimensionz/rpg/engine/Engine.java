@@ -37,6 +37,7 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new MenuItem(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
         getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
+        DamageListeners.initCustomPlayerRegeneration(2, 1, 80);
     }
 
     @Override
@@ -90,5 +91,15 @@ public final class Engine extends JavaPlugin {
             }
         }
         player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue((player.getPersistentDataContainer().get(new NamespacedKey(INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER) / 100) * 2);
+    }
+
+    public static void healPlayer(Player player, double healthToHeal, boolean capMaxHeal) {
+        // Add player heal event
+        if (capMaxHeal) {
+            if (healthToHeal + player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) > player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
+                healthToHeal = player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) - player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
+            }
+        }
+        player.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) + healthToHeal);
     }
 }
