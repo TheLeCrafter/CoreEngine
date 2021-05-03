@@ -8,6 +8,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -103,8 +104,17 @@ public class DamageListeners implements Listener {
                 int regenPercentage = player.getPersistentDataContainer().get(REGENERATION_STAT_KEY, PersistentDataType.INTEGER);
                 double healthToHeal = (regenPercentage * player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100;
                 Engine.healPlayer(player, healthToHeal, true);
+                setPlayerHealth(player);
             }
         }, 0, 20 * secondsPerRegeneration);
+    }
+
+    public static void setPlayerHealth(Player player) {
+        double health = player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
+        double maxHealth = player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE);
+        double percentage = (health * maxHealth) / 100;
+        double playerHealthFromPercentage = percentage * player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100;
+        player.setHealth(Math.round(Float.parseFloat(String.valueOf(playerHealthFromPercentage))));
     }
 
 }

@@ -93,6 +93,7 @@ public final class Engine extends JavaPlugin {
                 player.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
             }
         }
+        DamageListeners.setPlayerHealth(player);
         player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue((player.getPersistentDataContainer().get(new NamespacedKey(INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER) / 100) * 2);
     }
 
