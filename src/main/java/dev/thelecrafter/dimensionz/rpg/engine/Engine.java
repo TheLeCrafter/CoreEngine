@@ -86,7 +86,7 @@ public final class Engine extends JavaPlugin {
             }
             if (stat.equals(Stat.HEALTH)) {
                 player.getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, Double.parseDouble(String.valueOf(value)));
-                if (player.getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) {
+                if (!player.getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) {
                     player.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, Double.parseDouble(String.valueOf(value)));
                 }
             } else {
