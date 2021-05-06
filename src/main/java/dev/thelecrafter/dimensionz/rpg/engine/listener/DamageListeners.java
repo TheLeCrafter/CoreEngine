@@ -16,9 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -85,6 +83,12 @@ public class DamageListeners implements Listener {
         Engine.refreshPlayerStats(event.getPlayer());
     }
 
+    // DISABLE PLAYER HUNGER
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        event.setCancelled(true);
+    }
+
     // DISABLE PLAYER REGENERATION
     @EventHandler
     public void onRegeneration(EntityRegainHealthEvent event) {
@@ -121,7 +125,7 @@ public class DamageListeners implements Listener {
         double percentage = health / maxHealth;
         double playerHealthFromPercentage = percentage * player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100;
         if (playerHealthFromPercentage < 1) playerHealthFromPercentage = 1;
-        player.setHealth(Math.round(Float.parseFloat(String.valueOf(playerHealthFromPercentage))));
+        player.setHealth(Math.round(playerHealthFromPercentage));
     }
 
 }

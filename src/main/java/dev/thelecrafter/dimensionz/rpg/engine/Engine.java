@@ -3,6 +3,7 @@ package dev.thelecrafter.dimensionz.rpg.engine;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.GetTemplateItemCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.OpenStatsMenuCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.inventories.StatsInventory;
+import dev.thelecrafter.dimensionz.rpg.engine.listener.AntiGriefEvents;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
@@ -37,6 +38,7 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HealthStandsHandler(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new MenuItem(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new StatsInventory(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new AntiGriefEvents(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
         getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
         DamageListeners.initCustomPlayerRegeneration(2, 1, 80);
