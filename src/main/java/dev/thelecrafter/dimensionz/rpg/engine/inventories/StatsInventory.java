@@ -72,8 +72,9 @@ public class StatsInventory implements Listener {
         if (event.getPlayer().getOpenInventory() != null) {
             if (event.getPlayer().getOpenInventory().getTitle() != null) {
                 if (event.getPlayer().getOpenInventory().getTitle().equals(TITLE)) {
-                    event.getPlayer().closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
-                    event.getPlayer().openInventory(getInventory(event.player));
+                    for (int slot = 0; slot < getInventory(event.getPlayer()).getSize(); slot++) {
+                        event.getPlayer().getOpenInventory().setItem(slot, getInventory(event.getPlayer()).getItem(slot));
+                    }
                 }
             }
         }

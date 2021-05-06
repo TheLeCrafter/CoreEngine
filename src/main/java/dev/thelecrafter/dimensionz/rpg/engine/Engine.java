@@ -95,6 +95,9 @@ public final class Engine extends JavaPlugin {
                 player.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
             }
         }
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
+        player.setHealthScale(20);
+        player.setHealthScaled(true);
         DamageListeners.setPlayerHealth(player);
         player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue((player.getPersistentDataContainer().get(new NamespacedKey(INSTANCE, Stat.ATTACK_SPEED.toString()), PersistentDataType.INTEGER) / 100) * 2);
     }
@@ -105,7 +108,7 @@ public final class Engine extends JavaPlugin {
             if (healthToHeal + player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) > player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
                 healthToHeal = player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) - player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
             }
-        }
+        } if (healthToHeal > 0) Bukkit.getPluginManager().callEvent(new StatsChangeEvent(player, Stat.HEALTH, player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE), player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) + healthToHeal));
         player.getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) + healthToHeal);
     }
 }

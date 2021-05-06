@@ -8,10 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class StatsChangeEvent extends Event {
     public static final HandlerList HANDLER_LIST = new HandlerList();
-    public final Player player;
-    public final Stat stat;
-    public final double from;
-    public final double to;
+    private final Player player;
+    private final Stat stat;
+    private final double from;
+    private final double to;
 
     public StatsChangeEvent(Player player, Stat stat, double from, double to) {
         this.player = player;
