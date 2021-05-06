@@ -74,7 +74,7 @@ public class DamageListeners implements Listener {
             Engine.refreshPlayerStats((Player) event.getEntity());
             event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
             event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - event.getDamage());
-            ((Player) event.getEntity()).setHealth(Math.round((event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100));
+            setPlayerHealth(((Player) event.getEntity()).getPlayer());
         }
     }
 
