@@ -71,9 +71,10 @@ public class DamageListeners implements Listener {
     @EventHandler
     public void onDamageSetDefense(EntityDamageEvent event) {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
-            Engine.refreshPlayerStats((Player) event.getEntity());
-            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
+            double damage = event.getDamage();
             event.setDamage(0);
+            Engine.refreshPlayerStats((Player) event.getEntity());
+            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - DamageCalculations.calculateWithDefensiveStats(damage, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
             setPlayerHealth(((Player) event.getEntity()).getPlayer());
         }
     }
