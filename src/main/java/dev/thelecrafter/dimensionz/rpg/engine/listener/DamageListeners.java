@@ -123,7 +123,7 @@ public class DamageListeners implements Listener {
         double health = player.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
         double maxHealth = player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE);
         double percentage = health / maxHealth;
-        double playerHealthFromPercentage = percentage * player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100;
+        double playerHealthFromPercentage = percentage * player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         if (playerHealthFromPercentage < 1) playerHealthFromPercentage = 1;
         player.setHealth(Math.round(playerHealthFromPercentage));
     }
