@@ -1,7 +1,9 @@
 package dev.thelecrafter.dimensionz.rpg.engine.listener;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
+import com.destroystokyo.paper.event.player.PlayerAttackEntityCooldownResetEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
+import io.papermc.paper.event.player.PlayerItemCooldownEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -27,6 +29,16 @@ public class StatUpdateListeners implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        Engine.refreshPlayerStats(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onCooldown(PlayerItemCooldownEvent event) {
+        Engine.refreshPlayerStats(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onCooldownReset(PlayerAttackEntityCooldownResetEvent event) {
         Engine.refreshPlayerStats(event.getPlayer());
     }
 
