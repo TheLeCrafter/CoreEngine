@@ -7,6 +7,10 @@ description: Replace the vanilla combat/health/... system with this custom one
 permissions:
   coreengine.grief.armorstand:
     default: false
+  coreengine.grief.world.place:
+    default: false
+  coreengine.grief.world.break:
+    default: false
 commands:
   gettemplateitem:
     permission: coreengine.commands.gettemplateitem
