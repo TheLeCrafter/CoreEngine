@@ -1,5 +1,6 @@
 package dev.thelecrafter.dimensionz.rpg.engine.commands;
 
+import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.inventories.StatsInventory;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
@@ -17,6 +18,7 @@ public class OpenStatsMenuCommand implements CommandExecutor {
             if (player.getOpenInventory() != null) {
                 player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
             }
+            Engine.refreshPlayerStats(player);
             player.openInventory(StatsInventory.getInventory(player));
         }
         return true;
