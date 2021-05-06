@@ -80,6 +80,7 @@ public class DamageListeners implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
+        event.getPlayer().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getPlayer().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE));
         Engine.refreshPlayerStats(event.getPlayer());
     }
 
