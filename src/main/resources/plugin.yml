@@ -16,3 +16,5 @@ commands:
     permission: coreengine.commands.gettemplateitem
   openstatsmenu:
     description: Opens the stats menu
+  item:
+    permission: coreengine.commands.item
