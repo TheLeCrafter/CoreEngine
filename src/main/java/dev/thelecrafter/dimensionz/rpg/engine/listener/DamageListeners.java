@@ -72,8 +72,8 @@ public class DamageListeners implements Listener {
     public void onDamageSetDefense(EntityDamageEvent event) {
         if (event.getEntity().getType().equals(EntityType.PLAYER)) {
             Engine.refreshPlayerStats((Player) event.getEntity());
-            event.setDamage(DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
-            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - event.getDamage());
+            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - DamageCalculations.calculateWithDefensiveStats(event.getDamage(), event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
+            event.setDamage(0);
             setPlayerHealth(((Player) event.getEntity()).getPlayer());
         }
     }
@@ -125,7 +125,8 @@ public class DamageListeners implements Listener {
         double maxHealth = player.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE);
         double percentage = health / maxHealth;
         double playerHealthFromPercentage = percentage * player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        if (playerHealthFromPercentage < 1) playerHealthFromPercentage = 1;
+        if (playerHealthFromPercentage <= 0) playerHealthFromPercentage = 0;
+        else if (playerHealthFromPercentage <= 1) playerHealthFromPercentage = 1;
         player.setHealth(Math.round(playerHealthFromPercentage));
     }
 
