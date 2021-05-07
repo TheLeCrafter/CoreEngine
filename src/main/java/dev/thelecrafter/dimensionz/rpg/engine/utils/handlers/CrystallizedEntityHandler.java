@@ -25,17 +25,22 @@ public class CrystallizedEntityHandler implements Listener {
             Random random = new Random();
             int chance = 5;
             if (random.nextInt(100) + 1 <= chance) {
-                event.getEntity().getPersistentDataContainer().set(CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
-                if (!event.getEntity().getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) {
+                if (event.getEntity() instanceof LivingEntity) {
+                    LivingEntity livingEntity = (LivingEntity) event.getEntity();
+                    event.getEntity().getPersistentDataContainer().set(CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
+                    if (!event.getEntity().getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, livingEntity.getHealth());
+                    }
                     event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * 1.5);
-                }
-                if (!event.getEntity().getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
+                    if (!event.getEntity().getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    }
                     event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE));
+                    if (!event.getEntity().getPersistentDataContainer().has(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue());
+                    }
+                    event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
                 }
-                if (!event.getEntity().getPersistentDataContainer().has(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE)) {
-                    event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue());
-                }
-                event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
             }
         }
     }
