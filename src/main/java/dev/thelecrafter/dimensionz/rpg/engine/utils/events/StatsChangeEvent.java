@@ -1,6 +1,6 @@
 package dev.thelecrafter.dimensionz.rpg.engine.utils.events;
 
-import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

@@ -3,8 +3,10 @@ package dev.thelecrafter.dimensionz.rpg.engine.utils.builder;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.rarity.Rarity;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.rarity.RarityUtils;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -35,6 +37,7 @@ public class ItemBuilder {
     private int double_damage = 0;
     private final Material material;
     private Map<NamespacedKey, String> namespacedKeys = null;
+    private Rarity rarity = Rarity.COMMON;
 
     public ItemBuilder(Material material) {
         this.material = material;
@@ -116,10 +119,18 @@ public class ItemBuilder {
         this.double_damage = double_damage;
     }
 
+    public Rarity getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(Rarity rarity) {
+        this.rarity = rarity;
+    }
+
     public ItemStack build() {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        if (displayName != null) meta.setDisplayName(displayName);
+        if (displayName != null) meta.setDisplayName(RarityUtils.getChatColor(rarity) + displayName);
         List<String> lore = new ArrayList<>();
         if (damage > 0) {
             lore.add(ChatColor.RED + "⬢ Schaden: " + ChatColor.GREEN + damage);
@@ -149,7 +160,9 @@ public class ItemBuilder {
             lore.add("");
             lore.addAll(this.lore);
         }
-        if (!lore.isEmpty()) meta.setLore(lore);
+        lore.add("");
+        lore.add(RarityUtils.getDisplayName(rarity));
+        meta.setLore(lore);
         Multimap<Attribute, AttributeModifier> multimap = ArrayListMultimap.create();
         multimap.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "REPLACE_ALL", 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         meta.setAttributeModifiers(multimap);

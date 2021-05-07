@@ -8,8 +8,8 @@ import dev.thelecrafter.dimensionz.rpg.engine.listener.AntiGriefEvents;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.ItemAbilities;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
@@ -19,9 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -31,7 +29,6 @@ public final class Engine extends JavaPlugin {
 
     public static Engine INSTANCE;
     public static final EquipmentSlot[] CHECKED_SLOTS = EquipmentSlot.values();
-
 
     @Override
     public void onEnable() {

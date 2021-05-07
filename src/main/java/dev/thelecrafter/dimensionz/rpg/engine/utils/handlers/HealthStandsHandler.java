@@ -1,8 +1,8 @@
 package dev.thelecrafter.dimensionz.rpg.engine.utils.handlers;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -11,7 +11,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.persistence.PersistentDataType;

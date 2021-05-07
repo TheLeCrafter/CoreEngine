@@ -1,4 +1,4 @@
-package dev.thelecrafter.dimensionz.rpg.engine.stats;
+package dev.thelecrafter.dimensionz.rpg.engine.utils.stats;
 
 public enum Stat {
 

@@ -1,21 +1,18 @@
 package dev.thelecrafter.dimensionz.rpg.engine.inventories;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.CustomTextureHead;
-import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsUpdateEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;

@@ -1,8 +1,8 @@
 package dev.thelecrafter.dimensionz.rpg.engine.listener;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
-import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.calculations.DamageCalculations;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.DamageStandsHandler;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.HealthStandsHandler;

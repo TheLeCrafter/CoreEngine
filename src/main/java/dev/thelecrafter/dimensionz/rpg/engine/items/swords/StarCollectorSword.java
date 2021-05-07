@@ -2,6 +2,7 @@ package dev.thelecrafter.dimensionz.rpg.engine.items.swords;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.builder.ItemBuilder;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.rarity.Rarity;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -18,18 +19,19 @@ public class StarCollectorSword {
 
     public static ItemStack getItem() {
         ItemBuilder builder = new ItemBuilder(Material.DIAMOND_SWORD);
-        builder.setDisplayName(ChatColor.DARK_PURPLE + "Schwert des Sternensammlers");
+        builder.setDisplayName("Schwert des Sternensammlers");
         builder.setDamage(30);
         builder.setStrength(90);
         builder.setDoubleDamage(10);
         builder.setAttackSpeed(25);
+        builder.setRarity(Rarity.EPIC);
         Map<NamespacedKey, String> keyStringMap = new HashMap<>();
         keyStringMap.put(ID_KEY, "item_id");
         keyStringMap.put(ABILITY_KEY, "ability_id");
         builder.setNamespacedKeys(keyStringMap);
         builder.setLore(Arrays.asList(
-                ChatColor.GOLD + "Fähigkeit: Energie der Sterne",
-                ChatColor.GRAY + "Coming soon"
+                ChatColor.GOLD + "Fähigkeit: Energie der Sterne §e[RECHTS KLICK]",
+                ChatColor.GRAY + "Mir fällt nichts gutes ein bruh"
         ));
         ItemStack item = builder.build();
         return item;

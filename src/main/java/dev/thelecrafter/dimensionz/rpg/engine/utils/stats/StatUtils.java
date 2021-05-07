@@ -1,4 +1,4 @@
-package dev.thelecrafter.dimensionz.rpg.engine.stats;
+package dev.thelecrafter.dimensionz.rpg.engine.utils.stats;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
 import net.md_5.bungee.api.ChatColor;
