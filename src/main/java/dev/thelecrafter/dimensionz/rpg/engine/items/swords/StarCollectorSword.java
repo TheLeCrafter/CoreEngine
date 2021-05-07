@@ -30,7 +30,7 @@ public class StarCollectorSword {
         keyStringMap.put(ABILITY_KEY, "ability_id");
         builder.setNamespacedKeys(keyStringMap);
         builder.setLore(Arrays.asList(
-                ChatColor.GOLD + "Fähigkeit: Energie der Sterne",
+                ChatColor.GOLD + "Fähigkeit: Scharfsinniges Auge",
                 ChatColor.GRAY + "Erhöht die Chance [STERNSPLITTER DISPLAY NAME]",
                 ChatColor.GRAY + "zu erhalten um " + ChatColor.YELLOW + "50%"
         ));
