@@ -4,6 +4,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.commands.ItemCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.OpenStatsMenuCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.inventories.StatsInventory;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.*;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.CrystallizedEntityHandler;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
@@ -38,6 +39,7 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AntiGriefEvents(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new ItemAbilities(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new ItemUpdater(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new CrystallizedEntityHandler(), INSTANCE);
         getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
         getCommand("item").setExecutor(new ItemCommand());
         getCommand("item").setTabCompleter(new ItemCommand());
