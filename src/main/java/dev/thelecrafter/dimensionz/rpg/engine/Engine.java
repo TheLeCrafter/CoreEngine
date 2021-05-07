@@ -29,7 +29,7 @@ public final class Engine extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        INSTANCE = this;
+        INSTANCE = Bukkit.getPluginManager().getPlugin("CoreEngine");
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new HealthStandsHandler(), INSTANCE);
@@ -46,7 +46,6 @@ public final class Engine extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        INSTANCE = Bukkit.getPluginManager().getPlugin("CoreEngine");
         for (World world : Bukkit.getWorlds()) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getPersistentDataContainer().has(DamageStandsHandler.TEMPORARY_STAND_KEY, PersistentDataType.STRING)) {
