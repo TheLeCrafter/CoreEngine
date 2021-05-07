@@ -21,6 +21,7 @@ import java.util.Map;
 public class HealthStandsHandler implements Listener {
 
     public static final NamespacedKey TEMPORARY_STAND_KEY = new NamespacedKey(Engine.INSTANCE, "TEMPORARY_HEALTH_STAND");
+    public static final NamespacedKey ENTITY_DAMAGE_KEY = new NamespacedKey(Engine.INSTANCE, "entity_damage");
     public static final Map<Entity, ArmorStand> STAND_MAP = new HashMap<>();
 
     public static String getDisplayName(LivingEntity entity) {
@@ -43,6 +44,9 @@ public class HealthStandsHandler implements Listener {
                     }
                     if (!event.getEntity().getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
                         event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, maxHealth);
+                    }
+                    if (!event.getEntity().getPersistentDataContainer().has(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue());
                     }
                     ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
                     ((LivingEntity) event.getEntity()).setHealth(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());

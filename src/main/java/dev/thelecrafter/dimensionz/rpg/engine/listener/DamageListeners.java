@@ -65,6 +65,8 @@ public class DamageListeners implements Listener {
                     DamageStandsHandler.spawnArmorStand(event.getEntity(), damage);
                 }
             } else event.setDamage(0);
+        } else {
+            event.setDamage(event.getDamager().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
         }
     }
 
