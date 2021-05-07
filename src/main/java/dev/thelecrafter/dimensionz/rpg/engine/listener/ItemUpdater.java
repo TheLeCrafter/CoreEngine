@@ -13,9 +13,11 @@ public class ItemUpdater implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         for (ItemStack item : event.getPlayer().getInventory()) {
-            PersistentDataContainer container = item.getPersistentDataContainer();
-            // Star Collector Sword
-            if (container.has(StarCollectorSword.ID_KEY, PersistentDataType.STRING)) item.setItemMeta(StarCollectorSword.getItem().getItemMeta());
+            if (item.getPersistentDataContainer() != null) {
+                PersistentDataContainer container = item.getPersistentDataContainer();
+                // Star Collector Sword
+                if (container.has(StarCollectorSword.ID_KEY, PersistentDataType.STRING)) item.setItemMeta(StarCollectorSword.getItem().getItemMeta());
+            }
         }
     }
 
