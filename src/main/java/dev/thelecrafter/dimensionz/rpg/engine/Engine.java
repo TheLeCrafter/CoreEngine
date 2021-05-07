@@ -55,6 +55,9 @@ public final class Engine extends JavaPlugin {
                 }
             }
         }
+        for (Entity entity : HealthStandsHandler.STAND_MAP.keySet()) {
+            entity.remove();
+        }
     }
 
     public static void refreshPlayerStats(Player player) {
