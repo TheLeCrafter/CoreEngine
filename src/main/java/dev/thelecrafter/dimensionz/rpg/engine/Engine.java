@@ -6,6 +6,7 @@ import dev.thelecrafter.dimensionz.rpg.engine.commands.OpenStatsMenuCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.inventories.StatsInventory;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.AntiGriefEvents;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
+import dev.thelecrafter.dimensionz.rpg.engine.listener.ItemAbilities;
 import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.stats.StatUtils;
@@ -31,6 +32,7 @@ public final class Engine extends JavaPlugin {
     public static Engine INSTANCE;
     public static final EquipmentSlot[] CHECKED_SLOTS = EquipmentSlot.values();
 
+
     @Override
     public void onEnable() {
         INSTANCE = this;
@@ -40,6 +42,7 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new MenuItem(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new StatsInventory(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new AntiGriefEvents(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new ItemAbilities(), INSTANCE);
         getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
         getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
         getCommand("item").setExecutor(new ItemCommand());
