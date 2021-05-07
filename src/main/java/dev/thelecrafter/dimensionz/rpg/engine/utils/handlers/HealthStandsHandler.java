@@ -17,6 +17,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class HealthStandsHandler implements Listener {
 
@@ -34,7 +35,7 @@ public class HealthStandsHandler implements Listener {
         return name;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onSpawn(EntitySpawnEvent event) {
         if (!event.getEntity().getType().equals(EntityType.ARMOR_STAND) && !event.getEntity().getType().equals(EntityType.PLAYER)) {
             if (event.getEntity() instanceof Damageable) {
@@ -52,6 +53,17 @@ public class HealthStandsHandler implements Listener {
                     }
                     ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
                     ((LivingEntity) event.getEntity()).setHealth(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    Random random = new Random();
+                    int chance = 5;
+                    if (random.nextInt(100) + 1 <= chance) {
+                        if (event.getEntity() instanceof LivingEntity) {
+                            LivingEntity livingEntity = (LivingEntity) event.getEntity();
+                            event.getEntity().getPersistentDataContainer().set(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
+                            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * 1.5);
+                            event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) * 1.5);
+                            event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
+                        }
+                    }
                     spawnArmorStands((LivingEntity) event.getEntity());
                 }
             }
