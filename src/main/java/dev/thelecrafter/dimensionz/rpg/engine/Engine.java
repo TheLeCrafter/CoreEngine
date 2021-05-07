@@ -19,11 +19,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Engine extends JavaPlugin {
 
-    public static Engine INSTANCE;
+    public static Plugin INSTANCE;
     public static final EquipmentSlot[] CHECKED_SLOTS = EquipmentSlot.values();
 
     @Override
@@ -45,6 +46,7 @@ public final class Engine extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        INSTANCE = Bukkit.getPluginManager().getPlugin("CoreEngine");
         for (World world : Bukkit.getWorlds()) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getPersistentDataContainer().has(DamageStandsHandler.TEMPORARY_STAND_KEY, PersistentDataType.STRING)) {
