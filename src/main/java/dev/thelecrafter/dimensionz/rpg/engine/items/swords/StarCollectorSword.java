@@ -20,18 +20,19 @@ public class StarCollectorSword {
     public static ItemStack getItem() {
         ItemBuilder builder = new ItemBuilder(Material.DIAMOND_SWORD);
         builder.setDisplayName("Schwert des Sternensammlers");
-        builder.setDamage(30);
-        builder.setStrength(90);
-        builder.setDoubleDamage(10);
-        builder.setAttackSpeed(25);
+        builder.setDamage(60);
+        builder.setStrength(25);
+        builder.setAttackSpeed(35);
+        builder.setDoubleDamage(5);
         builder.setRarity(Rarity.EPIC);
         Map<NamespacedKey, String> keyStringMap = new HashMap<>();
         keyStringMap.put(ID_KEY, "item_id");
         keyStringMap.put(ABILITY_KEY, "ability_id");
         builder.setNamespacedKeys(keyStringMap);
         builder.setLore(Arrays.asList(
-                ChatColor.GOLD + "Fähigkeit: Energie der Sterne §e[RECHTS KLICK]",
-                ChatColor.GRAY + "Mir fällt nichts gutes ein bruh"
+                ChatColor.GOLD + "Fähigkeit: Energie der Sterne",
+                ChatColor.GRAY + "Erhöht die Chance [STERNSPLITTER DISPLAY NAME]",
+                ChatColor.GRAY + "zu erhalten um " + ChatColor.YELLOW + "50%"
         ));
         ItemStack item = builder.build();
         return item;

@@ -1,13 +1,9 @@
 package dev.thelecrafter.dimensionz.rpg.engine;
 
-import dev.thelecrafter.dimensionz.rpg.engine.commands.GetTemplateItemCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.ItemCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.OpenStatsMenuCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.inventories.StatsInventory;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.AntiGriefEvents;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.ItemAbilities;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
+import dev.thelecrafter.dimensionz.rpg.engine.listener.*;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
@@ -40,7 +36,7 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new StatsInventory(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new AntiGriefEvents(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new ItemAbilities(), INSTANCE);
-        getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
+        Bukkit.getPluginManager().registerEvents(new ItemUpdater(), INSTANCE);
         getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
         getCommand("item").setExecutor(new ItemCommand());
         getCommand("item").setTabCompleter(new ItemCommand());

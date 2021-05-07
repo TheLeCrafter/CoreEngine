@@ -17,15 +17,10 @@ public class ItemAbilities implements Listener {
             if (event.getItem().hasItemMeta()) {
                 if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                     PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
-                    // Star collector sword
-                    if (container.has(StarCollectorSword.ABILITY_KEY, PersistentDataType.STRING)) starCollectorSwordAbility(event);
+                    // Add items
                 }
             }
         }
-    }
-
-    public void starCollectorSwordAbility(PlayerInteractEvent event) {
-        event.getPlayer().sendMessage(ChatColor.GREEN + "Coming soon!");
     }
 
 }
