@@ -52,7 +52,7 @@ public class HealthStandsHandler implements Listener {
                         event.getEntity().getPersistentDataContainer().set(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue());
                     }
                     Random random = new Random();
-                    int chance = 50;
+                    int chance = 5;
                     if (random.nextInt(100) + 1 <= chance) {
                         event.getEntity().getPersistentDataContainer().set(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
                         event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * 2);
