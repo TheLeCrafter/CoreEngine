@@ -1,6 +1,7 @@
 package dev.thelecrafter.dimensionz.rpg.engine.items.swords;
 
 import dev.thelecrafter.dimensionz.rpg.engine.Engine;
+import dev.thelecrafter.dimensionz.rpg.engine.items.crafting.StarSplitter;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.builder.ItemBuilder;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.rarity.Rarity;
 import net.md_5.bungee.api.ChatColor;
@@ -31,7 +32,7 @@ public class StarCollectorSword {
         builder.setNamespacedKeys(keyStringMap);
         builder.setLore(Arrays.asList(
                 ChatColor.GOLD + "Fähigkeit: Scharfsinniges Auge",
-                ChatColor.GRAY + "Erhöht die Chance [STERNSPLITTER DISPLAY NAME]",
+                ChatColor.GRAY + "Erhöht die Chance " + StarSplitter.getItem().getItemMeta().getDisplayName(),
                 ChatColor.GRAY + "zu erhalten um " + ChatColor.YELLOW + "50%"
         ));
         ItemStack item = builder.build();
