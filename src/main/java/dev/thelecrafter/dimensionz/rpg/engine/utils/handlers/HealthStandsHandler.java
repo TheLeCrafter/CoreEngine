@@ -17,10 +17,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class HealthStandsHandler implements Listener {
 
     public static final NamespacedKey TEMPORARY_STAND_KEY = new NamespacedKey(Engine.INSTANCE, "TEMPORARY_HEALTH_STAND");
+    public static final NamespacedKey ENTITY_DAMAGE_KEY = new NamespacedKey(Engine.INSTANCE, "entity_damage");
     public static final Map<Entity, ArmorStand> STAND_MAP = new HashMap<>();
 
     public static String getDisplayName(LivingEntity entity) {
@@ -28,10 +30,12 @@ public class HealthStandsHandler implements Listener {
         if (entity.getPersistentDataContainer().has(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE)) health = entity.getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE);
         double maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         if (entity.getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) maxHealth = entity.getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE);
-        return ChatColor.RED + "" + health + ChatColor.GREEN + "/" + ChatColor.RED + maxHealth + StatUtils.getDisplayName(Stat.HEALTH);
+        String name = ChatColor.RED + "" + health + ChatColor.GREEN + "/" + ChatColor.RED + maxHealth + StatUtils.getDisplayName(Stat.HEALTH);
+        if (entity.getPersistentDataContainer().has(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING)) name = name + " " + ChatColor.DARK_PURPLE + "✳";
+        return name;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onSpawn(EntitySpawnEvent event) {
         if (!event.getEntity().getType().equals(EntityType.ARMOR_STAND) && !event.getEntity().getType().equals(EntityType.PLAYER)) {
             if (event.getEntity() instanceof Damageable) {
@@ -43,6 +47,17 @@ public class HealthStandsHandler implements Listener {
                     }
                     if (!event.getEntity().getPersistentDataContainer().has(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) {
                         event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, maxHealth);
+                    }
+                    if (!event.getEntity().getPersistentDataContainer().has(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE)) {
+                        event.getEntity().getPersistentDataContainer().set(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue());
+                    }
+                    Random random = new Random();
+                    int chance = 5;
+                    if (random.nextInt(100) + 1 <= chance) {
+                        event.getEntity().getPersistentDataContainer().set(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
+                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * 2);
+                        event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) * 2);
+                        event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
                     }
                     ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
                     ((LivingEntity) event.getEntity()).setHealth(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());

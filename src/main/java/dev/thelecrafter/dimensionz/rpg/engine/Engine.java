@@ -1,13 +1,10 @@
 package dev.thelecrafter.dimensionz.rpg.engine;
 
-import dev.thelecrafter.dimensionz.rpg.engine.commands.GetTemplateItemCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.ItemCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.commands.OpenStatsMenuCommand;
 import dev.thelecrafter.dimensionz.rpg.engine.inventories.StatsInventory;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.AntiGriefEvents;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.DamageListeners;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.ItemAbilities;
-import dev.thelecrafter.dimensionz.rpg.engine.listener.StatUpdateListeners;
+import dev.thelecrafter.dimensionz.rpg.engine.listener.*;
+import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.CrystallizedEntityHandler;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.Stat;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.stats.StatUtils;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.events.StatsChangeEvent;
@@ -23,16 +20,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Engine extends JavaPlugin {
 
-    public static Engine INSTANCE;
+    public static Plugin INSTANCE;
     public static final EquipmentSlot[] CHECKED_SLOTS = EquipmentSlot.values();
 
     @Override
     public void onEnable() {
-        INSTANCE = this;
+        INSTANCE = Bukkit.getPluginManager().getPlugin("CoreEngine");
         Bukkit.getPluginManager().registerEvents(new StatUpdateListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new DamageListeners(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new HealthStandsHandler(), INSTANCE);
@@ -40,7 +38,8 @@ public final class Engine extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new StatsInventory(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new AntiGriefEvents(), INSTANCE);
         Bukkit.getPluginManager().registerEvents(new ItemAbilities(), INSTANCE);
-        getCommand("gettemplateitem").setExecutor(new GetTemplateItemCommand());
+        Bukkit.getPluginManager().registerEvents(new ItemUpdater(), INSTANCE);
+        Bukkit.getPluginManager().registerEvents(new CrystallizedEntityHandler(), INSTANCE);
         getCommand("openstatsmenu").setExecutor(new OpenStatsMenuCommand());
         getCommand("item").setExecutor(new ItemCommand());
         getCommand("item").setTabCompleter(new ItemCommand());
@@ -57,6 +56,9 @@ public final class Engine extends JavaPlugin {
                     entity.remove();
                 }
             }
+        }
+        for (Entity entity : HealthStandsHandler.STAND_MAP.keySet()) {
+            entity.remove();
         }
     }
 
