@@ -20,7 +20,7 @@ public class StarCollectorSword {
 
     public static ItemStack getItem() {
         ItemBuilder builder = new ItemBuilder(Material.DIAMOND_SWORD);
-        builder.setDisplayName("Schwert des Sternensammlers");
+        builder.setDisplayName("Schwert des Sternsammlers");
         builder.setDamage(60);
         builder.setStrength(25);
         builder.setAttackSpeed(35);
