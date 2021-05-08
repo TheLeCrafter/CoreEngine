@@ -4,12 +4,14 @@ import dev.thelecrafter.dimensionz.rpg.engine.items.crafting.StarSplitter;
 import dev.thelecrafter.dimensionz.rpg.engine.items.swords.StarCollectorSword;
 import dev.thelecrafter.dimensionz.rpg.engine.utils.handlers.CrystallizedEntityHandler;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -37,6 +39,15 @@ public class ItemAbilities implements Listener {
         if (event.getEntity().getPersistentDataContainer().has(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING)) starSplitterDrop(event);
     }
 
+    // RARE DROP NOTIFICATION
+    public static void rareDropNotification(Player player, ItemStack item) {
+        if (item.hasItemMeta()) {
+            if (item.getItemMeta().hasDisplayName()) {
+                player.sendMessage("§6§lSELTEN! " + item.getDisplayName());
+            }
+        }
+    }
+
     // CRAFTING RECIPES
     public void starSplitterRecipe(PlayerInteractEvent event) {
         event.getPlayer().sendMessage(ChatColor.RED + "Coming soon");
@@ -54,6 +65,7 @@ public class ItemAbilities implements Listener {
                     ThreadLocalRandom random = ThreadLocalRandom.current();
                     if (random.nextInt() <= chance) {
                         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), StarSplitter.getItem());
+                        rareDropNotification(event.getEntity().getKiller(), StarSplitter.getItem());
                     }
                 }
             }
