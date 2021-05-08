@@ -50,20 +50,18 @@ public class DamageListeners implements Listener {
             if (player.getCooledAttackStrength(0) < 1) damage = baseDamage / 4;
             if (event.getEntity() instanceof LivingEntity) {
                 if (event.getEntity() instanceof Damageable) {
-                    if (event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - damage <= 0) {
-                        event.setDamage(((LivingEntity) event.getEntity()).getHealth());
-                    } else {
-                        event.setDamage((damage * event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE)) / 100);
-                    }
+                    double percentage = event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) / event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE);
+                    event.setDamage(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * percentage);
                     event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - damage);
-                    if (event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) < 0) {
+                    if (event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) <= 0) {
+                        ((LivingEntity) event.getEntity()).setHealth(0);
                         event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, 0.0);
                     }
                     if (HealthStandsHandler.STAND_MAP.containsKey(event.getEntity())) {
                         HealthStandsHandler.STAND_MAP.get(event.getEntity()).setCustomName(HealthStandsHandler.getDisplayName((LivingEntity) event.getEntity()));
                     }
                     DamageStandsHandler.spawnArmorStand(event.getEntity(), damage);
-                }
+                } event.setDamage(0);
             } else event.setDamage(0);
         } else {
             event.setDamage(event.getDamager().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
@@ -78,6 +76,10 @@ public class DamageListeners implements Listener {
             Engine.refreshPlayerStats((Player) event.getEntity());
             event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) - DamageCalculations.calculateWithDefensiveStats(damage, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.DEFENSE.toString()), PersistentDataType.INTEGER)));
             setPlayerHealth(((Player) event.getEntity()).getPlayer());
+        } else {
+            if (HealthStandsHandler.STAND_MAP.containsKey(event.getEntity())) {
+                HealthStandsHandler.STAND_MAP.get(event.getEntity()).setCustomName(HealthStandsHandler.getDisplayName((LivingEntity) event.getEntity()));
+            }
         }
     }
 

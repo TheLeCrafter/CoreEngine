@@ -51,19 +51,16 @@ public class HealthStandsHandler implements Listener {
                     if (!event.getEntity().getPersistentDataContainer().has(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE)) {
                         event.getEntity().getPersistentDataContainer().set(ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue());
                     }
+                    Random random = new Random();
+                    int chance = 50;
+                    if (random.nextInt(100) + 1 <= chance) {
+                        event.getEntity().getPersistentDataContainer().set(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
+                        event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * 2);
+                        event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) * 2);
+                        event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
+                    }
                     ((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100);
                     ((LivingEntity) event.getEntity()).setHealth(((LivingEntity) event.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                    Random random = new Random();
-                    int chance = 5;
-                    if (random.nextInt(100) + 1 <= chance) {
-                        if (event.getEntity() instanceof LivingEntity) {
-                            LivingEntity livingEntity = (LivingEntity) event.getEntity();
-                            event.getEntity().getPersistentDataContainer().set(CrystallizedEntityHandler.CRYSTALLIZED_ENTITY_KEY, PersistentDataType.STRING, "true");
-                            event.getEntity().getPersistentDataContainer().set(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(new NamespacedKey(Engine.INSTANCE, Stat.HEALTH.toString()), PersistentDataType.DOUBLE) * 1.5);
-                            event.getEntity().getPersistentDataContainer().set(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(StatUtils.MAX_HEALTH_KEY, PersistentDataType.DOUBLE) * 1.5);
-                            event.getEntity().getPersistentDataContainer().set(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE, event.getEntity().getPersistentDataContainer().get(HealthStandsHandler.ENTITY_DAMAGE_KEY, PersistentDataType.DOUBLE));
-                        }
-                    }
                     spawnArmorStands((LivingEntity) event.getEntity());
                 }
             }
