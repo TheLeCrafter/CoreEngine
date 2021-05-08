@@ -24,7 +24,6 @@ public class StarSplitter {
         builder.setDisplayName("Sternsplitter");
         builder.setNamespacedKeys(namespacedKeyStringMap);
         builder.setLore(Arrays.asList(
-                "",
                 ChatColor.GRAY + "Dieser Splitter kommt",
                 ChatColor.GRAY + "aus den großen Weiten des",
                 ChatColor.GRAY + "Universums und birgt",
